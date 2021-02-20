@@ -4,7 +4,7 @@ function vcd
         printf "usage: vcd [-h] directory\n\n"
 
         printf "positional arguments:\n"
-        printf "  directory           directory to move\n"
+        printf "  repository_name     repository to move\n"
         printf "\n"
 
         printf "optional arguments:\n"
@@ -27,22 +27,23 @@ function vcd
         return 1
     end
 
-    # Set directory
+    # Set target directory
+    # If repository_name is empty, move to workspace root
     set -l repository_name $argv[1]
     if [ "$repository_name" = "" ]
-        set directory $workspace_dir
+        set target_dir $workspace_dir
     else
-        set directory $workspace_dir/$VCSTOOL_SRC_DIR/$repository_name
+        set target_dir $workspace_dir/$VCSTOOL_SRC_DIR/$repository_name
     end
 
     # Validate
-    if not test -d "$directory"
-        printf "[vcd] no such directory: $directory\n"
+    if not test -d "$target_dir"
+        printf "[vcd] no such directory: $target_dir\n"
         return 1
     end
 
     # Change directory and refresh
-    cd $directory
+    cd $target_dir
     commandline -f repaint
     return 0
 end

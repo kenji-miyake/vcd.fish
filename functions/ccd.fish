@@ -4,7 +4,7 @@ function ccd
         printf "usage: ccd [-h] directory\n\n"
 
         printf "positional arguments:\n"
-        printf "  package_directory   package directory to move\n"
+        printf "  package_name        package to move\n"
         printf "\n"
 
         printf "optional arguments:\n"
@@ -37,25 +37,26 @@ function ccd
     # Check search directory
     test -d "$workspace_dir/$base_dir" || return 1
 
-    # Find package directory
+    # Set target directory
+    # If package_name is empty, move to workspace root
     set -l package_name $argv[1]
     if [ "$package_name" = "" ]
-        set package_directory $workspace_dir
+        set target_dir $workspace_dir
     else
-        set package_directory (__ccd_find_package_dir $package_name $base_dir)
+        set target_dir (__ccd_find_package_dir $package_name $base_dir)
     end
 
     # Validate
-    if [ "$package_directory" = "" ]
+    if [ "$target_dir" = "" ]
         printf "[ccd] no such package: $package_name\n"
         return 1
-    else if not test -d "$package_directory"
-        printf "[ccd] no such directory: $package_directory\n"
+    else if not test -d "$target_dir"
+        printf "[ccd] no such directory: $target_dir\n"
         return 1
     end
 
     # Change directory and refresh
-    cd $package_directory
+    cd $target_dir
     commandline -f repaint
     return 0
 end
