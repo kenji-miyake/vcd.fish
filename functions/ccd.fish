@@ -11,46 +11,47 @@ function ccd
         printf "  -h, --help          show this help message and exit\n"
         printf "  -s, --src           move under src directory\n"
         printf "  -i, --install       move under install directory\n"
+        printf "  -o, --opt           move under opt directory\n"
         printf "\n"
 
         return 0
     end
 
     # Parse arguments
-    set -l options "h/help" "s/src" "i/install"
-    argparse -x "s,i" $options -- $argv || return 1
+    set -l options "h/help" "s/src" "i/install" "o/opt"
+    argparse -x "s,i,o" $options -- $argv || return 1
 
     # Show help
     set -q _flag_help && __help && return 0
 
     # Set base directory
-    set -l base_dir $CCD_DEFAULT_MODE
-    set -q _flag_src && set base_dir $VCSTOOL_SRC_DIR
-    set -q _flag_install && set base_dir $VCSTOOL_INSTALL_DIR
+    set -l ccd_mode $CCD_DEFAULT_MODE
+    set -q _flag_src && set ccd_mode src
+    set -q _flag_install && set ccd_mode install
+    set -q _flag_opt && set ccd_mode opt
 
-    # Get workspace directory
-    if not set -l workspace_dir (__vcd_get_workspace_dir)
-        printf "[ccd] failed to get workspace directory\n"
+    # Get base directory
+    set -l base_dir (__ccd_get_base_dir $ccd_mode)
+    if not test -d "$base_dir"
+        printf "[ccd] failed to get base directory\n"
         return 1
     end
-
-    # Check search directory
-    test -d "$workspace_dir/$base_dir" || return 1
 
     # Set target directory
     # If package_name is empty, move to workspace root
     set -l package_name $argv[1]
     if [ "$package_name" = "" ]
-        set target_dir $workspace_dir
+        set target_dir (__ccd_get_workspace_dir $ccd_mode)
     else
         set target_dir (__ccd_find_package_dir $package_name $base_dir)
+        if [ "$target_dir" = "" ]
+            printf "[ccd] no such package: $package_name\n"
+            return 1
+        end
     end
 
     # Validate
-    if [ "$target_dir" = "" ]
-        printf "[ccd] no such package: $package_name\n"
-        return 1
-    else if not test -d "$target_dir"
+    if not test -d "$target_dir"
         printf "[ccd] no such directory: $target_dir\n"
         return 1
     end

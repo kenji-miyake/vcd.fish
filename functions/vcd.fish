@@ -22,7 +22,8 @@ function vcd
     set -q _flag_help && __help && return 0
 
     # Get workspace directory
-    if not set -l workspace_dir (__vcd_get_workspace_dir)
+    set -l workspace_dir (__vcd_get_workspace_dir)
+    if not test -d "$workspace_dir"
         printf "[vcd] failed to get workspace directory\n"
         return 1
     end
