@@ -4,13 +4,13 @@ function __vcd_get_workspace_dir
 
     # Use COLCON_PREFIX_PATH
     if not test -d "$workspace_dir" && set -q COLCON_PREFIX_PATH
-        set workspace_dir (echo "$COLCON_PREFIX_PATH[1]" | sed -E "s/\/install\$//g")
+        set workspace_dir (echo "$COLCON_PREFIX_PATH[1]" | sed -E "s/\/$VCSTOOL_INSTALL_DIR\$//g")
     end
 
     # Use CMAKE_PREFIX_PATH
     if not test -d "$workspace_dir" && set -q CMAKE_PREFIX_PATH
         if not string match -q "/opt/ros/*" "$CMAKE_PREFIX_PATH[1]"
-            set workspace_dir (echo "$CMAKE_PREFIX_PATH[1]" | sed -E "s/\/(install|devel)\/*.*\$//g")
+            set workspace_dir (echo "$CMAKE_PREFIX_PATH[1]" | sed -E "s/\/($VCSTOOL_INSTALL_DIR)\/*.*\$//g")
         end
     end
 

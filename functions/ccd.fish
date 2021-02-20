@@ -26,7 +26,7 @@ function ccd
     # Set base directory
     set -l base_dir $CCD_DEFAULT_MODE
     set -q _flag_src && set base_dir $VCSTOOL_SRC_DIR
-    set -q _flag_install && set base_dir install
+    set -q _flag_install && set base_dir $VCSTOOL_INSTALL_DIR
 
     # Get workspace directory
     if not set -l workspace_dir (__vcd_get_workspace_dir)
