@@ -71,11 +71,12 @@ set -U VCD_MODE workspace
 > Note
 >
 > To use workspace mode, you need to prepare `.code-workspace` file, which is a workspace-config file of VSCode.
-> It can be generated from `.repos` file using `repos2workspace.py`.
+> It can be generated from `.repos` file using [`repos2workspace.py`](https://github.com/kenji-miyake/vscode-utils#repos2workspacepy).
 >
 > ```sh
 > cd vcd.fish
-> ./scripts/repos2workspace.py {path_to_repos_file.repos} -o {output_workspace_file}
+> wget -P /tmp https://raw.githubusercontent.com/kenji-miyake/vscode-utils/main/repos2workspace.py
+> python3 /tmp/repos2workspace.py YOUR_COLCON_WORKSPACE/YOUR_REPOS_FILE.repos
 > ```
 
 ### `ccd`
