@@ -1,7 +1,4 @@
-function __ccd_find_package_dir
-    set -l package_path $argv[1]
-    set -l base_dir $argv[2]
-
+function __ccd_find_package_dir --argument-names package_path base_dir
     # Split path
     set -l package_name (string replace -a -r -- "(\w+)\/.*" "\$1" "$package_path")
 

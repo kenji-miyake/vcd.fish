@@ -1,9 +1,4 @@
-function __ccd_get_base_dir
-    set -l ccd_mode $argv[1]
-
-    # Set default if empty
-    test "$ccd_mode" = "" && set -l ccd_mode $CCD_DEFAULT_MODE
-
+function __ccd_get_base_dir --argument-names ccd_mode
     # Get base directory
     if test "$ccd_mode" = "src" || test "$ccd_mode" = "install"
         set workspace_dir (__vcd_get_workspace_dir)

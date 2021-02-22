@@ -1,6 +1,4 @@
-function __ccd_get_candidate_pkgs
-    set -l base_dir $argv[1]
-
+function __ccd_get_candidate_pkgs --argument-names base_dir
     # Check search directory
     test -d "$base_dir" || return 1
 

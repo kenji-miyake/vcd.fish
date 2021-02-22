@@ -8,9 +8,7 @@ function __contains_pkg_name
     return 1
 end
 
-function __get_package_subdirs
-    set -l ccd_mode $argv[1]
-
+function __get_package_subdirs --argument-names ccd_mode
     set -l cursor (commandline -tc)
     set -l package_name (string replace -a -r -- "^(\w+)\/.*" "\$1" "$cursor")
     set -l package_path (string replace -a -r -- "\/\w*\$" "" "$cursor")
