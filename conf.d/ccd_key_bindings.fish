@@ -4,7 +4,7 @@ function __ccd_fzf
         return 1
     end
 
-    if not set -l candidate_pkgs (__ccd_get_candidate_pkgs $CCD_DEFAULT_MODE)
+    if not set -l candidate_pkgs (__ccd_get_candidate_pkgs (__ccd_get_base_dir $CCD_DEFAULT_MODE))
         printf "[ccd] no candidate found: mode = $CCD_DEFAULT_MODE\n"
         return 1
     end

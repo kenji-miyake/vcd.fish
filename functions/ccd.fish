@@ -30,19 +30,20 @@ function ccd
     set -q _flag_install && set ccd_mode install
     set -q _flag_opt && set ccd_mode opt
 
-    # Get base directory
-    set -l base_dir (__ccd_get_base_dir $ccd_mode)
-    if not test -d "$base_dir"
-        printf "[ccd] failed to get base directory\n"
-        return 1
-    end
-
     # Set target directory
-    # If package_path is empty, move to workspace root
     set -l package_path $argv[1]
     if [ "$package_path" = "" ]
+        # If package_path is empty, move to workspace root
         set target_dir (__ccd_get_workspace_dir $ccd_mode)
     else
+        # Get base directory
+        set -l base_dir (__ccd_get_base_dir $ccd_mode)
+        if not test -d "$base_dir"
+            printf "[ccd] failed to get base directory\n"
+            return 1
+        end
+
+        # Find package path
         set target_dir (__ccd_find_package_dir $package_path $base_dir)
         if [ "$target_dir" = "" ]
             printf "[ccd] no such package path: $package_path\n"
