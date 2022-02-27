@@ -21,6 +21,11 @@ function __vcd_find_workspace_dir
         set base_dir $parent_dir
     end
 
+    # Find .git/ if .repos was not found
+    if [ "$workspace_dir" = "" ]
+        set workspace_dir (git rev-parse --show-toplevel 2>/dev/null)
+    end
+
     # Validate
     test -d "$workspace_dir" || return 1
 
