@@ -26,7 +26,7 @@ brew install fzf fd jq
 ### Using fisher (recommended)
 
 ```sh
-fisher add kenji-miyake/vcd.fish
+fisher install kenji-miyake/vcd.fish
 ```
 
 ### Using local-install script (for development)
