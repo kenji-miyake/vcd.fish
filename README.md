@@ -69,6 +69,9 @@ set -U VCD_MODE code-workspace
 
 # To use gitmodules mode
 set -U VCD_MODE gitmodules
+
+# To use path mode
+set -U VCD_MODE path
 ```
 
 > Note

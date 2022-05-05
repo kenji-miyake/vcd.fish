@@ -21,6 +21,13 @@ function __vcd_get_candidate_dirs
         set candidate_dirs $candidate_dirs (cat $workspace_dir/.gitmodules | grep -oP "path = \K(.*)")
     end
 
+    # path mode
+    if [ "$VCD_MODE" = path ]
+        for d in (fd -H -I -t d "^.git\$" $workspace_dir/$VCSTOOL_SRC_DIR | sed -E "s|^$workspace_dir/||g" | sed -E "s|/.git||g")
+            set candidate_dirs $candidate_dirs $d
+        end
+    end
+
     # Validate
     test "$candidate_dirs" = "" && return 1
 
