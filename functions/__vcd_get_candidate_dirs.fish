@@ -24,14 +24,19 @@ function __vcd_get_candidate_dirs
     # Validate
     test "$candidate_dirs" = "" && return 1
 
+    # Check existence
+    for d in $candidate_dirs
+        test -d $workspace_dir/$d && set valid_candidate_dirs $valid_candidate_dirs $d
+    end
+
     # Remove src prefix
-    set candidate_dirs (printf "%s\n" $candidate_dirs | sed -E "s|^$VCSTOOL_SRC_DIR/||g")
+    set valid_candidate_dirs (printf "%s\n" $valid_candidate_dirs | sed -E "s|^$VCSTOOL_SRC_DIR/||g")
 
     # Remove duplicates
-    set candidate_dirs (printf "%s\n" $candidate_dirs | awk '!x[$0]++')
+    set valid_candidate_dirs (printf "%s\n" $valid_candidate_dirs | awk '!x[$0]++')
 
     # Output
-    printf "%s\n" $candidate_dirs
+    printf "%s\n" $valid_candidate_dirs
 
     return 0
 end
