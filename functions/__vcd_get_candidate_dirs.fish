@@ -36,6 +36,12 @@ function __vcd_get_candidate_dirs
         test -d $workspace_dir/$d && set valid_candidate_dirs $valid_candidate_dirs $d
     end
 
+    # Validate
+    if test "$valid_candidate_dirs" = ""
+        echo "[vcd] no valid directories found: Please import repositories." >&2
+        return 1
+    end
+
     # Remove src prefix
     set valid_candidate_dirs (printf "%s\n" $valid_candidate_dirs | sed -E "s|^$VCSTOOL_SRC_DIR/||g")
 
