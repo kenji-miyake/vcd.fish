@@ -65,7 +65,7 @@ To switch the mode, please set `$VCD_MODE`.
 set -U VCD_MODE repos
 
 # To use workspace mode
-set -U VCD_MODE workspace
+set -U VCD_MODE code-workspace
 ```
 
 > Note
