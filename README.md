@@ -66,6 +66,9 @@ set -U VCD_MODE repos
 
 # To use workspace mode
 set -U VCD_MODE code-workspace
+
+# To use gitmodules mode
+set -U VCD_MODE gitmodules
 ```
 
 > Note

@@ -15,6 +15,10 @@ function __vcd_get_candidate_dirs
             set candidate_dirs $candidate_dirs (cat $f | jq --raw-output '.settings."git.scanRepositories"[]' | sed -E "s/^$VCSTOOL_SRC_DIR\///g")
         end
     end
+
+    # gitmodules mode
+    if [ "$VCD_MODE" = gitmodules ]
+        set candidate_dirs $candidate_dirs (cat $workspace_dir/.gitmodules | grep -oP "path = \K(.*)" | sed -E "s/^$VCSTOOL_SRC_DIR\///g")
     end
 
     # Validate
