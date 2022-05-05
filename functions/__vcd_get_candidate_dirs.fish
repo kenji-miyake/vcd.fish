@@ -42,6 +42,11 @@ function __vcd_get_candidate_dirs
         return 1
     end
 
+    # Remove ignore patterns
+    if [ "$VCD_IGNORE_PATTERNS" != "" ]
+        set valid_candidate_dirs (printf "%s\n" $valid_candidate_dirs | sed -E "/$VCD_IGNORE_PATTERNS/d")
+    end
+
     # Remove src prefix
     set valid_candidate_dirs (printf "%s\n" $valid_candidate_dirs | sed -E "s|^$VCSTOOL_SRC_DIR/||g")
 

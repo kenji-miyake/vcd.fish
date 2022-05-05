@@ -85,6 +85,12 @@ set -U VCD_MODE path
 > python3 /tmp/repos2workspace.py YOUR_COLCON_WORKSPACE/YOUR_REPOS_FILE.repos
 > ```
 
+To filter the results, set `VCD_IGNORE_PATTERNS`.
+
+```fish
+set -U VCD_IGNORE_PATTERNS ".*\/vendor\/|.*\/tmp\/"
+```
+
 ### `ccd`
 
 `ccd` is a command for moving to colcon packages in a workspace.
