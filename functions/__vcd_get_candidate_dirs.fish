@@ -5,27 +5,33 @@ function __vcd_get_candidate_dirs
     # repos mode
     if [ "$VCD_MODE" = repos ]
         for f in (fd -I -t f -e repos --max-depth 1 . $workspace_dir)
-            set candidate_dirs $candidate_dirs (cat $f | grep -v "repositories" | sed -E "s/^  //g" | grep -v " .*" | grep -v "^\$" | sed -E "s/://g")
+            set candidate_dirs $candidate_dirs $VCSTOOL_SRC_DIR/(cat $f | grep -v "repositories" | sed -E "s/^  //g" | grep -v " .*" | grep -v "^\$" | sed -E "s/://g")
         end
     end
 
     # workspace mode
     if [ "$VCD_MODE" = code-workspace ]
         for f in (fd -I -t f -e code-workspace --max-depth 1 . $workspace_dir)
-            set candidate_dirs $candidate_dirs (cat $f | jq --raw-output '.settings."git.scanRepositories"[]' | sed -E "s/^$VCSTOOL_SRC_DIR\///g")
+            set candidate_dirs $candidate_dirs (cat $f | jq --raw-output '.settings."git.scanRepositories"[]')
         end
     end
 
     # gitmodules mode
     if [ "$VCD_MODE" = gitmodules ]
-        set candidate_dirs $candidate_dirs (cat $workspace_dir/.gitmodules | grep -oP "path = \K(.*)" | sed -E "s/^$VCSTOOL_SRC_DIR\///g")
+        set candidate_dirs $candidate_dirs (cat $workspace_dir/.gitmodules | grep -oP "path = \K(.*)")
     end
 
     # Validate
     test "$candidate_dirs" = "" && return 1
 
+    # Remove src prefix
+    set candidate_dirs (printf "%s\n" $candidate_dirs | sed -E "s|^$VCSTOOL_SRC_DIR/||g")
+
+    # Remove duplicates
+    set candidate_dirs (printf "%s\n" $candidate_dirs | awk '!x[$0]++')
+
     # Output
-    printf "%s\n" $candidate_dirs | awk '!x[$0]++'
+    printf "%s\n" $candidate_dirs
 
     return 0
 end
